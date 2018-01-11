@@ -74,9 +74,9 @@ if __name__ == '__main__':
     parser.add_argument("-p", "--password", 
                         help="User's password to acess the database", metavar="user_password")
     args = parser.parse_args()
-    db_servername = args.db_servername
-    db_database = args.db_database
-    db_username = args.db_username
-    db_password = args.db_password
+    db_servername = args.servername
+    db_database = args.database
+    db_username = args.username
+    db_password = args.password
 
     app.run(debug=True, host='0.0.0.0', port=8000)
