@@ -9,7 +9,7 @@ Created on Mon Dec 18 12:15:29 2017
 import json
 import collections
 from flask import Flask
-from optparse import OptionParser
+import argparse
 
 from conexao import Conexao
 
@@ -63,19 +63,20 @@ def get_servidores():
     return j
 
 if __name__ == '__main__':
-    parser = OptionParser()
-    parser.add_option("-s", "--servername", dest="db_servername", action="store", type="string", 
-                        help="Name of the database server", metavar="DB")
-    parser.add_option("-d", "--database", dest="db_database", action="store", type="string", 
-                        help="Name of the database", metavar="DB")
-    parser.add_option("-u", "--username", dest="db_username", action="store", type="string", 
-                        help="Username to access the database", metavar="DB")
-    parser.add_option("-p", "--password", dest="db_password", action="store", type="string", 
-                        help="Password to acess the database", metavar="DB")
-    (options, args) = parser.parse_args()
-    db_servername = options.db_servername
-    db_database = options.db_database
-    db_username = options.db_username
-    db_password = options.db_password
+    parser = argparse.ArgumentParser(description='API Servidor to provide servants\' data.')
+
+    parser.add_argument("-s", "--servername", metavar='server name', #type=string, #nargs='+',
+                        help='Name of the database_server')
+    parser.add_argument("-d", "--database", 
+                        help="Name of the database", metavar="database_name")
+    parser.add_argument("-u", "--username", 
+                        help="Username to access the database", metavar="username")
+    parser.add_argument("-p", "--password", 
+                        help="User's password to acess the database", metavar="user_password")
+    args = parser.parse_args()
+    db_servername = args.db_servername
+    db_database = args.db_database
+    db_username = args.db_username
+    db_password = args.db_password
 
     app.run(debug=True, host='0.0.0.0', port=8000)
