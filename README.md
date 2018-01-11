@@ -9,4 +9,5 @@ flexible use of databases with native SQL queries.
 The developer workstation must have:
 * Python 3 (<https://www.python.org/>)
 * PyPI (<https://pypi.python.org/pypi>)
-* Python libraries described in the [requirements.txt](requirements.txt) file.
+* Python libraries described in the file [requirements.txt](requirements.txt)
+* Connectivity with a intance of SIGRH database
