@@ -43,13 +43,6 @@ def buscar_dados(servername, database, username, password):
         d['sexo'] = row[8]
         objects_list.append(d)
  
-    #j = json.dumps(objects_list)
-    #objects_file = 'student_objects.js'
-    #f = open(objects_file,'w')
-    #f.write(j)
-    #f.close()
-    #print "&gt;&gt;", f, j
- 
     conn.fechar()
     
     return objects_list
@@ -65,7 +58,7 @@ def get_servidores():
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='API Servidor to provide servants\' data.')
 
-    parser.add_argument("-s", "--servername", metavar='server name', #type=string, #nargs='+',
+    parser.add_argument("-s", "--servername", metavar='server_name', 
                         help='Name of the database_server')
     parser.add_argument("-d", "--database", 
                         help="Name of the database", metavar="database_name")
