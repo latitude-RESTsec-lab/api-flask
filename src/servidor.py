@@ -25,12 +25,12 @@ db_database = ''
 db_username = ''
 db_password = ''
 
+# get all employees from database, using the Conexao object
 def get_all_employees(servername, database, username, password):
     conn = Conexao(servername, database, username, password)
     rows = conn.consultar(stmt)
- 
-    # Convert query to row arrays
 
+    # Convert query to row arrays
     objects_list = []
     for row in rows:
         d = collections.OrderedDict()
@@ -42,20 +42,22 @@ def get_all_employees(servername, database, username, password):
         d['data_nascimento'] = row[7].__str__()
         d['sexo'] = row[8]
         objects_list.append(d)
- 
+
     conn.fechar()
     
     return objects_list
 
 app = Flask(__name__)
 
+# web service API servidores
 @app.route('/api/servidores', methods=['GET'])
-def get_servidores():
+def get_all_employees():
     dados = get_all_employees(db_servername, db_database, db_username, db_password)
     j = json.dumps(dados)
     return j
 
 if __name__ == '__main__':
+    # configuring the parameters parser and storing parameters in global vars
     parser = argparse.ArgumentParser(description='API Servidor to provide servants\' data.')
 
     parser.add_argument("-s", "--servername", metavar='server_name', 
@@ -72,4 +74,5 @@ if __name__ == '__main__':
     db_username = args.username
     db_password = args.password
 
+    # starting the web server
     app.run(debug=True, host='0.0.0.0', port=8000)
