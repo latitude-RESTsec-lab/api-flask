@@ -25,7 +25,7 @@ db_database = ''
 db_username = ''
 db_password = ''
 
-def buscar_dados(servername, database, username, password):
+def get_all_employees(servername, database, username, password):
     conn = Conexao(servername, database, username, password)
     rows = conn.consultar(stmt)
  
@@ -51,7 +51,7 @@ app = Flask(__name__)
 
 @app.route('/api/servidores', methods=['GET'])
 def get_servidores():
-    dados = buscar_dados(db_servername, db_database, db_username, db_password)
+    dados = get_all_employees(db_servername, db_database, db_username, db_password)
     j = json.dumps(dados)
     return j
 
