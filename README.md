@@ -23,3 +23,7 @@ docker run -d --name CONTAINER_NAME -p 8000:5000 IMAGE_NAME
 # command to test the API
 curl http://localhost:8000/api/servidores 
 ```
+
+## Other issues
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept
