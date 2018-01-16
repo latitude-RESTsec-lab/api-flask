@@ -19,8 +19,8 @@ stmt_all_emp = """
 stmt_one_emp = stmt_all_emp + "where s.siape = {}"
 
 # get all employees from database, using the Conexao object
-def get_all_employees(servername, database, username, password):
-    conn = Conexao(servername, database, username, password)
+def get_all_employees(database_configuration):
+    conn = Conexao(database_configuration)
     rows = conn.consultar(stmt_all_emp)
 
     # Convert query to row arrays
@@ -41,8 +41,8 @@ def get_all_employees(servername, database, username, password):
     return objects_list
 
 # get on employee from database, using the Conexao object
-def get_employee_by_id(servername, database, username, password, mat_servidor):
-    conn = Conexao(servername, database, username, password)
+def get_employee_by_id(database_configuration, mat_servidor):
+    conn = Conexao(database_configuration)
     rows = conn.consultar(stmt_one_emp.format(mat_servidor))
 
     employee_data = {}

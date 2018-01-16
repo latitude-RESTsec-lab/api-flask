@@ -10,9 +10,16 @@ import psycopg2
 class Conexao(object):
     _db=None    
 
-    def __init__(self, mhost, db, usr, pwd):
-        self._db = psycopg2.connect(host=mhost, database=db, 
-                                    user=usr, password=pwd)
+    def __init__(self, db_config):
+        if not db_config:
+            raise Exception("There is no database configuration.")
+        elif not set(('db_servername', 'db_database', 'db_username', 'db_password')).issubset(db_config):
+            raise Exception("Some database configuration is missing.")
+
+        self._db = psycopg2.connect(host=db_config['db_servername'], 
+                                    database=db_config['db_database'], 
+                                    user=db_config['db_username'], 
+                                    password=db_config['db_password'])
 
     def manipular(self, sql):
         try:

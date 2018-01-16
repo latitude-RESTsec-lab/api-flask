@@ -35,10 +35,7 @@ def configure_params(p_servername, p_database, p_username, p_password):
 # web service API servidores
 @pessoal_controllers.route('/api/servidores', methods=['GET'])
 def get_all_employees_api():
-    dados = db.get_all_employees(database_config['db_servername'], 
-                                 database_config['db_database'], 
-                                 database_config['db_username'], 
-                                 database_config['db_password'])
+    dados = db.get_all_employees(database_config)
     j = json.dumps(dados)
     return j, {'Content-Type': 'application/json; charset=utf-8'}
 
@@ -50,10 +47,7 @@ def get_employee_by_id_api(mat_servidor=None):
     elif request.method == "GET":
         if mat_servidor:
             # retrieve one specific employee
-            dados = db.get_employee_by_id(database_config['db_servername'], 
-                                          database_config['db_database'], 
-                                          database_config['db_username'], 
-                                          database_config['db_password'], 
+            dados = db.get_employee_by_id(database_config, 
                                           mat_servidor)
             if dados:
                 return json.dumps(dados), {'Content-Type': 'application/json; charset=utf-8'}
