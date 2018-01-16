@@ -3,7 +3,6 @@
 """
 Created on Mon Dec 18 12:15:29 2017
 
-@author: unbdev
 """
 
 import psycopg2

@@ -1,9 +1,8 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-Created on Mon Dec 18 12:15:29 2017
+Created on Fri Jan 19 09:46:12 2018
 
-@author: unbdev
 """
 
 import json
