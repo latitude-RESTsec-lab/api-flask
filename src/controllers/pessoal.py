@@ -55,3 +55,9 @@ def get_employee_by_id_api(mat_servidor=None):
                 return "Not found", 404
         else:
             return "Bad Request", 400
+
+# web service API servidores
+@pessoal_controllers.route('/api/servidor', methods=['POST'])
+def create_a_new_employee_api():
+    print "post de servidor"
+    return "Ok", 200
