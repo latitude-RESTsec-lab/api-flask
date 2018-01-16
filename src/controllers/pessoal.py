@@ -22,6 +22,7 @@ def validate_suported_mime_type():
 # stores all database configuration
 database_config = {}
 
+# operations to be registered in the application object
 pessoal_controllers = Blueprint('pessoal_controllers', __name__)
 
 
@@ -50,9 +51,10 @@ def get_employee_by_id_api(mat_servidor=None):
         if mat_servidor:
             # retrieve one specific employee
             dados = db.get_employee_by_id(database_config['db_servername'], 
-                                 database_config['db_database'], 
-                                 database_config['db_username'], 
-                                 database_config['db_password'], mat_servidor)
+                                          database_config['db_database'], 
+                                          database_config['db_username'], 
+                                          database_config['db_password'], 
+                                          mat_servidor)
             if dados:
                 return json.dumps(dados), {'Content-Type': 'application/json; charset=utf-8'}
             else:
