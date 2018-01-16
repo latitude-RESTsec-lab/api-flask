@@ -8,18 +8,20 @@ Created on Mon Dec 18 12:15:29 2017
 
 import json
 import collections
-from flask import Flask
+from flask import Flask, request
 import argparse
 
 from conexao import Conexao
 
-stmt =      """
+stmt_all_emp = """
             select s.id_servidor, s.siape, s.id_pessoa, s.matricula_interna, 
                    s.id_foto, s.nome_identificacao, 
                    p.nome, p.data_nascimento, p.sexo
             from rh.servidor s
             inner join comum.pessoa p on (s.id_pessoa = p.id_pessoa) and (p.tipo = 'F')
             """
+stmt_one_emp = stmt_all_emp + "where id = {}"
+
 db_servername = ''
 db_database = ''
 db_username = ''
@@ -28,7 +30,7 @@ db_password = ''
 # get all employees from database, using the Conexao object
 def get_all_employees(servername, database, username, password):
     conn = Conexao(servername, database, username, password)
-    rows = conn.consultar(stmt)
+    rows = conn.consultar(stmt_all_emp)
 
     # Convert query to row arrays
     objects_list = []
@@ -47,14 +49,65 @@ def get_all_employees(servername, database, username, password):
     
     return objects_list
 
+# get on employee from database, using the Conexao object
+def get_employee_by_id(servername, database, username, password, mat_servidor):
+    conn = Conexao(servername, database, username, password)
+    rows = conn.consultar(stmt_one_emp.format(mat_servidor))
+
+    employee_data = {}
+    if not rows:
+        return None
+    else:
+        # Convert query to row arrays
+        for row in rows:
+            print 'in a row'
+            employee_data = collections.OrderedDict()
+            employee_data['id_servidor'] = row[0]
+            employee_data['siape'] = row[1]
+            employee_data['id_pessoa'] = row[2]
+            employee_data['matricula_interna'] = row[3]
+            employee_data['nome'] = row[6]
+            employee_data['data_nascimento'] = row[7].__str__()
+            employee_data['sexo'] = row[8]
+
+    conn.fechar()
+    
+    return employee_data
+
 app = Flask(__name__)
 
 # web service API servidores
 @app.route('/api/servidores', methods=['GET'])
-def get_all_employees():
+def get_all_employees_api():
     dados = get_all_employees(db_servername, db_database, db_username, db_password)
     j = json.dumps(dados)
     return j
+
+# web service API servidor/{matricula}
+@app.route("/api/servidor/<int:mat_servidor>", methods = ['GET'])
+def get_employee_by_id_api(mat_servidor=None):
+    if request.method == "GET":
+        if mat_servidor:
+            # retrieve one specific user
+            dados = get_employee_by_id(db_servername, db_database, db_username, db_password, mat_servidor=None)
+            if dados:
+                return json.dumps(dados)
+            else:
+                return "Not found", 404
+        else:
+            # retorna todas as notícias
+            # TODO raise error
+            return "Bad Request", 400
+
+    elif request.method == "PUT":
+        # update one specific user's data
+        # TODO raise error
+        return "Not Implemented", 501
+
+    elif request.method == "DELETE":
+        # delete one specific user
+        # TODO raise error
+        return "Not Implemented", 501
 
 if __name__ == '__main__':
     # configuring the parameters parser and storing parameters in global vars
