@@ -19,18 +19,18 @@ class Conexao(object):
         try:
             cur=self._db.cursor()
             cur.execute(sql)
-            cur.close();
+            cur.close()
             self._db.commit()
         except:
-            return False;
-        return True;
+            return False
+        return True
 
     def consultar(self, sql):
         rs=None
         try:
             cur=self._db.cursor()
             cur.execute(sql)
-            rs=cur.fetchall();
+            rs=cur.fetchall()
         except:
             return None
         return rs
