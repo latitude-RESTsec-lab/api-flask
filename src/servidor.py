@@ -20,7 +20,7 @@ stmt_all_emp = """
             from rh.servidor s
             inner join comum.pessoa p on (s.id_pessoa = p.id_pessoa) and (p.tipo = 'F')
             """
-stmt_one_emp = stmt_all_emp + "where id = {}"
+stmt_one_emp = stmt_all_emp + "where s.siape = {}"
 
 db_servername = ''
 db_database = ''
@@ -60,7 +60,6 @@ def get_employee_by_id(servername, database, username, password, mat_servidor):
     else:
         # Convert query to row arrays
         for row in rows:
-            print 'in a row'
             employee_data = collections.OrderedDict()
             employee_data['id_servidor'] = row[0]
             employee_data['siape'] = row[1]
@@ -74,6 +73,18 @@ def get_employee_by_id(servername, database, username, password, mat_servidor):
     
     return employee_data
 
+def validate_suported_mime_type():
+    # TODO aceitar '*/*'
+    #if 'Accept' in request.headers and not request.headers['Accept'] == 'application/json':
+    if 'Accept' in request.headers:
+        if request.headers['Accept'] == '*/*':
+            return True
+        else:
+            return request.headers['Accept'] == 'application/json'
+    else:
+        return True
+
+
 app = Flask(__name__)
 
 # web service API servidores
@@ -81,37 +92,28 @@ app = Flask(__name__)
 def get_all_employees_api():
     dados = get_all_employees(db_servername, db_database, db_username, db_password)
     j = json.dumps(dados)
-    return j
+    return j, {'Content-Type': 'application/json; charset=utf-8'}
 
 # web service API servidor/{matricula}
 @app.route("/api/servidor/<int:mat_servidor>", methods = ['GET'])
 def get_employee_by_id_api(mat_servidor=None):
-    if request.method == "GET":
+    if not validate_suported_mime_type():
+        return "Unsupported Media Type", 415
+    elif request.method == "GET":
         if mat_servidor:
-            # retrieve one specific user
-            dados = get_employee_by_id(db_servername, db_database, db_username, db_password, mat_servidor=None)
+            # retrieve one specific employee
+            dados = get_employee_by_id(db_servername, db_database, db_username, db_password, mat_servidor)
             if dados:
-                return json.dumps(dados)
+                return json.dumps(dados), {'Content-Type': 'application/json; charset=utf-8'}
             else:
                 return "Not found", 404
         else:
-            # retorna todas as notícias
-            # TODO raise error
             return "Bad Request", 400
 
-    elif request.method == "PUT":
-        # update one specific user's data
-        # TODO raise error
-        return "Not Implemented", 501
-
-    elif request.method == "DELETE":
-        # delete one specific user
-        # TODO raise error
-        return "Not Implemented", 501
 
 if __name__ == '__main__':
     # configuring the parameters parser and storing parameters in global vars
-    parser = argparse.ArgumentParser(description='API Servidor to provide servants\' data.')
+    parser = argparse.ArgumentParser(description='API Servidor to provide employee\'s data.')
 
     parser.add_argument("-s", "--servername", metavar='server_name', 
                         help='Name of the database_server')
