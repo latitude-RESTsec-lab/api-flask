@@ -74,8 +74,6 @@ def get_employee_by_id(servername, database, username, password, mat_servidor):
     return employee_data
 
 def validate_suported_mime_type():
-    # TODO aceitar '*/*'
-    #if 'Accept' in request.headers and not request.headers['Accept'] == 'application/json':
     if 'Accept' in request.headers:
         if request.headers['Accept'] == '*/*':
             return True
