@@ -85,21 +85,40 @@ def create_a_new_employee_api():
     print "post de servidor={}".format(new_employee_data)
 
     data_validation = dict()
+    # - required data
     data_validation['required'] = __required_data_validator(new_employee_data)
+    # - size validator: nome, sexo
     data_validation['size'] = __data_size_validator(new_employee_data)
+    # - domain validator: sexo
+    data_validation['domain'] = __data_domain_validator(new_employee_data)
 
-    msg = "\n".join(list(str(v) for k, v in data_validation.iteritems() if v))
+    msg = ";\n".join(list(str(v) for k, v in data_validation.iteritems() if v))
     if msg:
-        return "Bad request\n{}".format(msg), 400
+        return "Bad request.\n{}".format(msg), 400
 
     # TODO validations:
     # - date validator: data_nascimento
     # - int validator: id_servidor, siape, id_pessoa
-    # - size validator: nome, sexo
-    # - domain validator: sexo
     # - business validator: data_nascimento
 
     return "Ok", 200
+
+def __data_domain_validator(employee_data):
+    '''Function to validate if a subset of fields has accepted values.
+
+    parameter
+        - employee_data: a dict with the reveived data.
+
+    returns
+        - Empty object: if it is all ok
+        - Message with the fields with wrong data: if is not ok
+	'''
+    result = []
+    domain_data = [('sexo', {'F', 'M'})]
+    for x in domain_data:
+        if employee_data[x[0]] not in x[1]:
+            result.append("'{}' is an unaccepted value for the field {}".format(employee_data[x[0]], x[0]))
+    return "; ".join(result)
 
 def __data_size_validator(employee_data):
     '''Function to validate if a subset of fields is in an accepted size.
@@ -112,7 +131,7 @@ def __data_size_validator(employee_data):
         - Message with the fields in a wrong size: if is not ok
 	'''
     result = []
-    data_size = [('nome', 10), ('sexo', 1)]
+    data_size = [('nome', 100), ('sexo', 1)]
     for x in data_size:
         if len(employee_data[x[0]]) > x[1]:
             result.append("{} is {} but it must be {}".format(x[0], len(employee_data[x[0]]), x[1]))
