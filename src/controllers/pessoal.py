@@ -112,9 +112,9 @@ def __data_size_validator(employee_data):
         - Message with the fields in a wrong size: if is not ok
 	'''
     result = []
-    data_size = [('nome', 100), ('sexo', 1)]
+    data_size = [('nome', 10), ('sexo', 1)]
     for x in data_size:
-        if len(x[0]) > x[1]:
+        if len(employee_data[x[0]]) > x[1]:
             result.append("{} is {} but it must be {}".format(x[0], len(employee_data[x[0]]), x[1]))
     return "; ".join(result)
 
@@ -134,5 +134,5 @@ def __required_data_validator(employee_data):
     if not diff_result:
         return None
     else:
-        message = "This required data is missing: {}".format(diff_result)
+        message = "This required data is missing: {}".format("; ".join(diff_result))
         return message
