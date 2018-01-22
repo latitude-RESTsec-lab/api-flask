@@ -86,10 +86,12 @@ def create_a_new_employee_api():
 
     data_validation = dict()
     data_validation['required'] = __required_data_validator(new_employee_data)
-    if data_validation['required']:
-        return "Bad request\n{}".format(data_validation['required']), 400
+    data_validation['size'] = __data_size_validator(new_employee_data)
 
-    #if 
+    msg = "\n".join(list(str(v) for k, v in data_validation.iteritems() if v))
+    if msg:
+        return "Bad request\n{}".format(msg), 400
+
     # TODO validations:
     # - date validator: data_nascimento
     # - int validator: id_servidor, siape, id_pessoa
@@ -97,8 +99,24 @@ def create_a_new_employee_api():
     # - domain validator: sexo
     # - business validator: data_nascimento
 
-
     return "Ok", 200
+
+def __data_size_validator(employee_data):
+    '''Function to validate if a subset of fields is in an accepted size.
+
+    parameter
+        - employee_data: a dict with the reveived data.
+
+    returns
+        - Empty object: if it is all ok
+        - Message with the fields in a wrong size: if is not ok
+	'''
+    result = []
+    data_size = [('nome', 100), ('sexo', 1)]
+    for x in data_size:
+        if len(x[0]) > x[1]:
+            result.append("{} is {} but it must be {}".format(x[0], len(employee_data[x[0]]), x[1]))
+    return "; ".join(result)
 
 def __required_data_validator(employee_data):
     '''Function to validate if all required data is present.
