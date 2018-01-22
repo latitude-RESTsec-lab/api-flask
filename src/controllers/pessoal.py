@@ -77,20 +77,44 @@ def create_a_new_employee_api():
 	"sexo": "M"
 }
 	'''
+    if not validate_suported_mime_type():
+        return "Unsupported Media Type", 415
 
     # TODO test if the data is JSON
     new_employee_data = request.json
     print "post de servidor={}".format(new_employee_data)
-    required_data = ['nome', 'siape', 'data_nascimento', 'sexo', 'id_servidor', 'id_pessoa']
 
-    diferenca = set(required_data) - set(new_employee_data)
-    if diferenca:
-        message = "faltou dado = {}".format(diferenca)
-        return "Bad request\n{}".format(message), 400
-    
+    data_validation = dict()
+    data_validation['required'] = __required_data_validator(new_employee_data)
+    if data_validation['required']:
+        return "Bad request\n{}".format(data_validation['required']), 400
+
+    #if 
+    # TODO validations:
+    # - date validator: data_nascimento
+    # - int validator: id_servidor, siape, id_pessoa
+    # - size validator: nome, sexo
+    # - domain validator: sexo
+    # - business validator: data_nascimento
 
 
     return "Ok", 200
-    # TODO test if the response can be JSON
-    #if not validate_suported_mime_type():
-    #    return "Unsupported Media Type", 415
+
+def __required_data_validator(employee_data):
+    '''Function to validate if all required data is present.
+
+    parameter
+        - employee_data: a dict with the reveived data.
+
+    returns
+        - Empty object: if it is all ok
+        - Message with the missing fields: if is not ok
+	'''
+    required_data = ['nome', 'siape', 'data_nascimento', 'sexo', 'id_servidor', 'id_pessoa']
+    diff_result = set(required_data) - set(employee_data)
+
+    if not diff_result:
+        return None
+    else:
+        message = "This required data is missing: {}".format(diff_result)
+        return message
