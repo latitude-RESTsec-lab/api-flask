@@ -100,14 +100,14 @@ def create_a_new_employee_api():
 
     msg = ";\n".join(list(str(v) for k, v in data_validation.iteritems() if v))
     if msg:
-        return "Bad request.\n{}".format(msg), 400
+        return "Bad request.\n{}.".format(msg), 400
 
     # TODO save data in the database
 
     return "Created", 201
 
 def __regex_validator(employee_data):
-    '''TODO.
+    '''Function to validate if a subset of fields has accepted pattern.
 
     parameter
         - employee_data: a dict with the reveived data.
@@ -117,17 +117,22 @@ def __regex_validator(employee_data):
         - Message with the fields with wrong values: if is not ok
 	'''
     INT_VALIDATION_PATTERN = r'\b[0-9]+\b'
+    DATE_VALIDATION_PATTERN = r'^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)T([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])Z$'
+
     result = []
 
     for x in ['id_servidor', 'siape', 'id_pessoa']:
-        print x, employee_data[x]
         if x in employee_data and not re.search(INT_VALIDATION_PATTERN, str(employee_data[x])):
+            result.append("'{}' is an unaccepted pattern for the field '{}'".format(employee_data[x], x))
+
+    for x in ['data_nascimento']:
+        if x in employee_data and not re.search(DATE_VALIDATION_PATTERN, str(employee_data[x])):
             result.append("'{}' is an unaccepted pattern for the field '{}'".format(employee_data[x], x))
 
     return "; ".join(result)
 
 def __business_rule_validator(employee_data):
-    '''TODO.
+    '''Function to validate if the data respects defined business rules.
 
     parameter
         - employee_data: a dict with the reveived data.
@@ -139,9 +144,12 @@ def __business_rule_validator(employee_data):
     result = []
     
     if 'data_nascimento' in employee_data:
-        data_nascimento = datetime.strptime(employee_data['data_nascimento'], '%Y-%m-%d')
-        if data_nascimento > datetime.now():
-            result.append("Field '{}' has an unaccepted value: {}".format('data_nascimento', 'this date should be in the past'))
+        try:
+            data_nascimento = datetime.strptime(employee_data['data_nascimento'], '%Y-%m-%d')
+            if data_nascimento > datetime.now():
+                result.append("Field '{}' has an unaccepted value: {}".format('data_nascimento', 'this date should be in the past'))
+        except:
+            pass
 
     return "; ".join(result)
 
@@ -159,7 +167,7 @@ def __data_domain_validator(employee_data):
     domain_data = [('sexo', {'F', 'M'})]
     for x in domain_data:
         if employee_data[x[0]] not in x[1]:
-            result.append("'{}' is an unaccepted value for the field {}".format(employee_data[x[0]], x[0]))
+            result.append("'{}' is an unaccepted value for the field '{}'".format(employee_data[x[0]], x[0]))
     return "; ".join(result)
 
 def __data_size_validator(employee_data):
@@ -176,7 +184,7 @@ def __data_size_validator(employee_data):
     data_size = [('nome', 100), ('sexo', 1)]
     for x in data_size:
         if len(employee_data[x[0]]) > x[1]:
-            result.append("{} is {} but it must be {}".format(x[0], len(employee_data[x[0]]), x[1]))
+            result.append("Field '{}' is {} size long but it must be {}".format(x[0], len(employee_data[x[0]]), x[1]))
     return "; ".join(result)
 
 def __required_data_validator(employee_data):
