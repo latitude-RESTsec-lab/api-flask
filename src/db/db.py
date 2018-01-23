@@ -8,7 +8,7 @@ Created on Fri Jan 19 09:46:12 2018
 import collections
 import time, datetime
 
-from connection import Conexao
+from connection import PostgresDbHelper
 
 SQL_STMT_ALL_EMPLOYEES = """
             select s.id_servidor, s.siape, s.id_pessoa, s.matricula_interna, 
@@ -25,10 +25,10 @@ SQL_STMT_NEW_EMPLOYEE = """
 			VALUES ('{}', '{}', {}, {}, {}, null, '{}', '{}');
             """
 
-# get all employees from database, using the Conexao object
+# get all employees from database, using the PostgresDbHelper object
 def get_all_employees(database_configuration):
-    conn = Conexao(database_configuration)
-    rows = conn.consultar(SQL_STMT_ALL_EMPLOYEES)
+    conn = PostgresDbHelper(database_configuration)
+    rows = conn.retrieve(SQL_STMT_ALL_EMPLOYEES)
 
     # Convert query to row arrays
     objects_list = []
@@ -43,14 +43,14 @@ def get_all_employees(database_configuration):
         d['sexo'] = row[8]
         objects_list.append(d)
 
-    conn.fechar()
+    conn.close()
     
     return objects_list
 
-# get on employee from database, using the Conexao object
+# get on employee from database, using the PostgresDbHelper object
 def get_employee_by_id(database_configuration, mat_servidor):
-    conn = Conexao(database_configuration)
-    rows = conn.consultar(SQL_STMT_ONE_EMPLOYEE.format(mat_servidor))
+    conn = PostgresDbHelper(database_configuration)
+    rows = conn.retrieve(SQL_STMT_ONE_EMPLOYEE.format(mat_servidor))
 
     employee_data = {}
     if not rows:
@@ -67,13 +67,13 @@ def get_employee_by_id(database_configuration, mat_servidor):
             employee_data['data_nascimento'] = row[7].__str__()
             employee_data['sexo'] = row[8]
 
-    conn.fechar()
+    conn.close()
     
     return employee_data
 
-# stores a new employee in the database, using the Conexao object
+# stores a new employee in the database, using the PostgresDbHelper object
 def create_employee(database_configuration, new_employee):
-    conn = Conexao(database_configuration)
+    conn = PostgresDbHelper(database_configuration)
 
     date_now = datetime.datetime.now()
     b = time.mktime(date_now.timetuple())
@@ -88,8 +88,10 @@ def create_employee(database_configuration, new_employee):
                                     new_employee['data_nascimento'],
                                     new_employee['sexo'])
 
-    if not conn.manipular(parsed_sql):
+    if not conn.persist(parsed_sql):
         print "Database error!"
+        conn.close()
         return None
 
+    conn.close()
     return bid

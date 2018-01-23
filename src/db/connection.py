@@ -7,7 +7,7 @@ Created on Mon Dec 18 12:15:29 2017
 
 import psycopg2
 
-class Conexao(object):
+class PostgresDbHelper(object):
     _db=None    
 
     def __init__(self, db_config):
@@ -21,7 +21,7 @@ class Conexao(object):
                                     user=db_config['db_username'], 
                                     password=db_config['db_password'])
 
-    def manipular(self, sql):
+    def persist(self, sql):
         try:
             cur=self._db.cursor()
             cur.execute(sql)
@@ -31,7 +31,7 @@ class Conexao(object):
             return False
         return True
 
-    def consultar(self, sql):
+    def retrieve(self, sql):
         rs=None
         try:
             cur=self._db.cursor()
@@ -41,11 +41,11 @@ class Conexao(object):
             return None
         return rs
 
-    def proximaPK(self, tabela, chave):
-        sql='select max('+chave+') from '+tabela
-        rs = self.consultar(sql)
+    def proximaPK(self, table_name, key_field_name):
+        sql='select max('+key_field_name+') from '+table_name
+        rs = self.retrieve(sql)
         pk = rs[0][0]  
         return pk+1
 
-    def fechar(self):
+    def close(self):
         self._db.close()
