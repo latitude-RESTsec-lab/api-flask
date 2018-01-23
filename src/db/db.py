@@ -77,8 +77,6 @@ def create_employee(database_configuration, new_employee):
 
     date_now = datetime.datetime.now()
     b = time.mktime(date_now.timetuple())
-	#b := md5.Sum([]byte(fmt.Sprintf(string(ser.Nome), string(timestamp))))
-    #bid := binary.BigEndian.Uint64(b[:])
     bid = b % 99999
 
     parsed_sql = SQL_STMT_NEW_EMPLOYEE.format(
