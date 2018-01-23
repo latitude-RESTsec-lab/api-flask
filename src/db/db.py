@@ -10,15 +10,15 @@ import time, datetime
 
 from connection import Conexao
 
-stmt_all_emp = """
+SQL_STMT_ALL_EMPLOYEES = """
             select s.id_servidor, s.siape, s.id_pessoa, s.matricula_interna, 
                    s.id_foto, s.nome_identificacao, 
                    p.nome, p.data_nascimento, p.sexo
             from rh.servidor s
             inner join comum.pessoa p on (s.id_pessoa = p.id_pessoa) and (p.tipo = 'F')
             """
-stmt_one_emp = stmt_all_emp + "where s.siape = {}"
-stmt_new_emp = """
+SQL_STMT_ONE_EMPLOYEE = SQL_STMT_ALL_EMPLOYEES + "where s.siape = {}"
+SQL_STMT_NEW_EMPLOYEE = """
             INSERT INTO rh.servidor_tmp(
                 nome, nome_identificacao, siape, id_pessoa, matricula_interna, id_foto,
                 data_nascimento, sexo)
@@ -28,7 +28,7 @@ stmt_new_emp = """
 # get all employees from database, using the Conexao object
 def get_all_employees(database_configuration):
     conn = Conexao(database_configuration)
-    rows = conn.consultar(stmt_all_emp)
+    rows = conn.consultar(SQL_STMT_ALL_EMPLOYEES)
 
     # Convert query to row arrays
     objects_list = []
@@ -50,7 +50,7 @@ def get_all_employees(database_configuration):
 # get on employee from database, using the Conexao object
 def get_employee_by_id(database_configuration, mat_servidor):
     conn = Conexao(database_configuration)
-    rows = conn.consultar(stmt_one_emp.format(mat_servidor))
+    rows = conn.consultar(SQL_STMT_ONE_EMPLOYEE.format(mat_servidor))
 
     employee_data = {}
     if not rows:
@@ -81,7 +81,7 @@ def create_employee(database_configuration, new_employee):
     #bid := binary.BigEndian.Uint64(b[:])
     bid = b % 99999
 
-    parsed_sql = stmt_new_emp.format(
+    parsed_sql = SQL_STMT_NEW_EMPLOYEE.format(
                                     new_employee['nome'],
                                     new_employee['nome_identificacao'],
                                     new_employee['siape'],
