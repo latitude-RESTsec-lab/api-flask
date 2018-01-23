@@ -94,4 +94,4 @@ def create_employee(database_configuration, new_employee):
         print "Database error!"
         return None
 
-    return b
+    return bid
