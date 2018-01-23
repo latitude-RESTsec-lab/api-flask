@@ -7,6 +7,7 @@ Created on Fri Jan 19 09:46:12 2018
 
 import json
 from flask import Blueprint, request
+from datetime import datetime
 
 import db.db as db
 
@@ -91,19 +92,30 @@ def create_a_new_employee_api():
     data_validation['size'] = __data_size_validator(new_employee_data)
     # - domain validator: sexo
     data_validation['domain'] = __data_domain_validator(new_employee_data)
-
-    # TODO validations:
-    # - date validator: data_nascimento
-    # - int validator: id_servidor, siape, id_pessoa
-    data_validation['regex'] = None
     # - business validator: data_nascimento
     data_validation['business'] = __business_rule_validator(new_employee_data)
+    # - regex validator: date (data_nascimento), int (id_servidor, siape, id_pessoa)
+    data_validation['regex'] = __regex_validator(new_employee_data)
 
     msg = ";\n".join(list(str(v) for k, v in data_validation.iteritems() if v))
     if msg:
         return "Bad request.\n{}".format(msg), 400
 
     return "Created", 201
+
+def __regex_validator(employee_data):
+    '''TODO.
+
+    parameter
+        - employee_data: a dict with the reveived data.
+
+    returns
+        - Empty object: if it is all ok
+        - Message with the fields with wrong values: if is not ok
+	'''
+    result = []
+    
+    return "; ".join(result)
 
 def __business_rule_validator(employee_data):
     '''TODO.
@@ -116,10 +128,12 @@ def __business_rule_validator(employee_data):
         - Message with the fields with wrong values: if is not ok
 	'''
     result = []
-    domain_data = [('sexo', {'F', 'M'})]
-    for x in domain_data:
-        if employee_data[x[0]] not in x[1]:
-            result.append("'{}' is an unaccepted value for the field {}".format(employee_data[x[0]], x[0]))
+    
+    if 'data_nascimento' in employee_data:
+        data_nascimento = datetime.strptime(employee_data['data_nascimento'], '%Y-%m-%d')
+        if data_nascimento > datetime.now():
+            result.append("Field '{}' has an unaccepted value: {}".format('data_nascimento', 'this date should be in the past'))
+
     return "; ".join(result)
 
 def __data_domain_validator(employee_data):
