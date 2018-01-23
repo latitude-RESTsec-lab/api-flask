@@ -41,11 +41,5 @@ class PostgresDbHelper(object):
             return None
         return rs
 
-    def proximaPK(self, table_name, key_field_name):
-        sql='select max('+key_field_name+') from '+table_name
-        rs = self.retrieve(sql)
-        pk = rs[0][0]  
-        return pk+1
-
     def close(self):
         self._db.close()
