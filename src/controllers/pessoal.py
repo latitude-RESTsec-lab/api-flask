@@ -67,7 +67,7 @@ def create_a_new_employee_api():
     below in the sample_json var.
 	
     Example: 
-	curl -H "Content-Type: application/json" -X POST -d '{"id_servidor": 4321, "siape": 123456, "id_pessoa": 1234, "matricula_interna": 54321, "nome": "João da Silva", "data_nascimento": "1970-01-31", "sexo": "M"}' http://localhost:8000/api/servidor/
+	curl -H "Content-Type: application/json" -X POST -d '{"id_servidor": 4321, "siape": 123456, "id_pessoa": 1234, "matricula_interna": 54321, "nome": "João da Silva", "nome_identificacao": "João Ident", "data_nascimento": "1970-01-31", "sexo": "M"}' http://localhost:8000/api/servidor/
     
     sample_json = {
 	"id_servidor": 4321,
@@ -75,6 +75,7 @@ def create_a_new_employee_api():
 	"id_pessoa": 1234,
 	"matricula_interna": 54321,
 	"nome": "João da Silva",
+    "nome_identificacao": "João Ident",
 	"data_nascimento": "1970-01-31",
 	"sexo": "M"
 }
@@ -102,9 +103,12 @@ def create_a_new_employee_api():
     if msg:
         return "Bad request.\n{}.".format(msg), 400
 
-    # TODO save data in the database
-
-    return "Created", 201
+    # storing data in the database
+    new_id = db.create_employee(database_config, new_employee_data)
+    if new_id:
+        return "Created: {}".format(new_id), 201
+    else:
+        return "Internal server error", 500
 
 def __regex_validator(employee_data):
     '''Function to validate if a subset of fields has accepted pattern.
@@ -202,7 +206,7 @@ def __required_data_validator(employee_data):
         - Empty object: if it is all ok
         - Message with the missing fields: if is not ok
 	'''
-    required_data = ['nome', 'siape', 'data_nascimento', 'sexo', 'id_servidor', 'id_pessoa']
+    required_data = ['nome', 'nome_identificacao', 'siape', 'data_nascimento', 'sexo', 'id_servidor', 'id_pessoa']
     diff_result = set(required_data) - set(employee_data)
 
     if not diff_result:

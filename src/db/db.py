@@ -6,6 +6,7 @@ Created on Fri Jan 19 09:46:12 2018
 """
 
 import collections
+import time, datetime
 
 from connection import Conexao
 
@@ -17,6 +18,12 @@ stmt_all_emp = """
             inner join comum.pessoa p on (s.id_pessoa = p.id_pessoa) and (p.tipo = 'F')
             """
 stmt_one_emp = stmt_all_emp + "where s.siape = {}"
+stmt_new_emp = """
+            INSERT INTO rh.servidor_tmp(
+                nome, nome_identificacao, siape, id_pessoa, matricula_interna, id_foto,
+                data_nascimento, sexo)
+			VALUES ('{}', '{}', {}, {}, {}, null, '{}', '{}');
+            """
 
 # get all employees from database, using the Conexao object
 def get_all_employees(database_configuration):
@@ -63,3 +70,28 @@ def get_employee_by_id(database_configuration, mat_servidor):
     conn.fechar()
     
     return employee_data
+
+# stores a new employee in the database, using the Conexao object
+def create_employee(database_configuration, new_employee):
+    conn = Conexao(database_configuration)
+
+    date_now = datetime.datetime.now()
+    b = time.mktime(date_now.timetuple())
+	#b := md5.Sum([]byte(fmt.Sprintf(string(ser.Nome), string(timestamp))))
+    #bid := binary.BigEndian.Uint64(b[:])
+    bid = b % 99999
+
+    parsed_sql = stmt_new_emp.format(
+                                    new_employee['nome'],
+                                    new_employee['nome_identificacao'],
+                                    new_employee['siape'],
+                                    new_employee['id_pessoa'],
+                                    bid,
+                                    new_employee['data_nascimento'],
+                                    new_employee['sexo'])
+
+    if not conn.manipular(parsed_sql):
+        print "Database error!"
+        return None
+
+    return b
