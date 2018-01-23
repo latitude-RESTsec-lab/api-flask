@@ -8,6 +8,7 @@ Created on Fri Jan 19 09:46:12 2018
 import json
 from flask import Blueprint, request
 from datetime import datetime
+import re
 
 import db.db as db
 
@@ -101,6 +102,8 @@ def create_a_new_employee_api():
     if msg:
         return "Bad request.\n{}".format(msg), 400
 
+    # TODO save data in the database
+
     return "Created", 201
 
 def __regex_validator(employee_data):
@@ -113,8 +116,14 @@ def __regex_validator(employee_data):
         - Empty object: if it is all ok
         - Message with the fields with wrong values: if is not ok
 	'''
+    INT_VALIDATION_PATTERN = r'\b[0-9]+\b'
     result = []
-    
+
+    for x in ['id_servidor', 'siape', 'id_pessoa']:
+        print x, employee_data[x]
+        if x in employee_data and not re.search(INT_VALIDATION_PATTERN, str(employee_data[x])):
+            result.append("'{}' is an unaccepted pattern for the field '{}'".format(employee_data[x], x))
+
     return "; ".join(result)
 
 def __business_rule_validator(employee_data):
