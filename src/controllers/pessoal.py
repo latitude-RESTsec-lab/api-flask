@@ -118,6 +118,7 @@ def __regex_validator(employee_data):
 	'''
     INT_VALIDATION_PATTERN = r'\b[0-9]+\b'
     DATE_VALIDATION_PATTERN = r'^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)T([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])Z$'
+    NOME_VALIDATION_PATTERN = r'^([A-Z][a-z]+([ ]?[a-z]?[\'-]?[A-Z][a-z]+)*)$'
 
     result = []
 
@@ -127,6 +128,10 @@ def __regex_validator(employee_data):
 
     for x in ['data_nascimento']:
         if x in employee_data and not re.search(DATE_VALIDATION_PATTERN, str(employee_data[x])):
+            result.append("'{}' is an unaccepted pattern for the field '{}'".format(employee_data[x], x))
+
+    for x in ['nome', 'nome_identificacao']:
+        if x in employee_data and not re.search(NOME_VALIDATION_PATTERN, str(employee_data[x])):
             result.append("'{}' is an unaccepted pattern for the field '{}'".format(employee_data[x], x))
 
     return "; ".join(result)
