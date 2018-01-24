@@ -84,7 +84,7 @@ def create_a_new_employee_api():
 
     # TODO test if the data is JSON
     new_employee_data = request.json
-    print "post de servidor={}".format(new_employee_data)
+    print ("post de servidor={}".format(new_employee_data))
 
     data_validation = dict()
     # - required data
@@ -98,7 +98,7 @@ def create_a_new_employee_api():
     # - regex validator: date (data_nascimento), int (id_servidor, siape, id_pessoa)
     data_validation['regex'] = __regex_validator(new_employee_data)
 
-    msg = ";\n".join(list(str(v) for k, v in data_validation.iteritems() if v))
+    msg = ";\n".join(list(str(v) for k, v in data_validation.items() if v))
     if msg:
         return "Bad request.\n{}.".format(msg), 400
 
