@@ -24,6 +24,16 @@ docker run -d --name CONTAINER_NAME -p 8000:5000 IMAGE_NAME
 curl http://localhost:8000/api/servidores 
 ```
 
+## Program configuration
+
+Some program configurations must be set up in the program startup. So, the initialization command should be like this:
+
+```shell
+program-name -s $SERVER_NAME$ -d $DB_NAME$ -u $USER_NAME$ -w $USER_PASSWORD$ --debug -p $PORT_NUMBER$
+```
+
+Note that the parameters `debug' and `port' are optionals.
+
 ## Other issues
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept
