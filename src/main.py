@@ -15,7 +15,7 @@ app.register_blueprint(con.pessoal_controllers)
 
 if __name__ == '__main__':
     # configuring the parameters parser and storing parameters in global vars
-    parser = argparse.ArgumentParser(description='"API Servidor" to provide employee\'s data.')
+    parser = argparse.ArgumentParser(description='"API Servidor" to provide/handle employee\'s data.')
 
     parser.add_argument("-s", "--servername", metavar='server_name', 
                         help='Name of the database host server')
