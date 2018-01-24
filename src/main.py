@@ -25,7 +25,7 @@ if __name__ == '__main__':
                         help="Username to access the database", metavar="username")
     parser.add_argument("-w", "--password", 
                         help="User's password to acess the database", metavar="user_password")
-    parser.add_argument('--debug', action='store_true')
+    parser.add_argument("--debug", action="store_true")
     parser.add_argument("-p", "--port", type=int, default=8000,
                         help="Port the program will try to use to serve de API", metavar="api_port")
     args = parser.parse_args()
