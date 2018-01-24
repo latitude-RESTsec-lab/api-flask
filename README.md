@@ -29,10 +29,12 @@ curl http://localhost:8000/api/servidores
 Some program configurations must be set up in the program startup. So, the initialization command should be like this:
 
 ```shell
-program-name -s $SERVER_NAME$ -d $DB_NAME$ -u $USER_NAME$ -w $USER_PASSWORD$ --debug -p $PORT_NUMBER$
+program-name -s SERVER_NAME -d DB_NAME -u USER_NAME -w USER_PASSWORD --debug -p PORT_NUMBER
 ```
 
-Note that the parameters `debug' and `port' are optionals.
+Notes:
+- the parameters `debug` and `port` are optionals;
+- all capital words must be replaced by the correct value.
 
 ## Other issues
 
