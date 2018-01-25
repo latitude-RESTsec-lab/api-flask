@@ -17,4 +17,4 @@ COPY . /app
 
 EXPOSE 8000
 ENTRYPOINT [ "python3" ]
-CMD [ "src/servidor2.py" ]
+CMD [ "src/main.py" ]
