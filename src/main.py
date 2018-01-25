@@ -6,6 +6,7 @@ Created on Mon Dec 18 12:15:29 2017
 
 from flask import Flask
 import argparse
+import logging
 
 import controllers.pessoal as con
 
@@ -30,6 +31,17 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     con.configure_params(args.servername, args.database, args.username, args.password)
+
+    if args.debug:
+        log_level = logging.DEBUG
+    else:
+        log_level = logging.INFO
+    logging.basicConfig(filename='python-api.log',
+                        filemode='a',
+                        format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S',
+                        level=log_level)
+    logging.info("API Employee started")
 
     # starting the web server
     app.run(debug=args.debug, host='0.0.0.0', port=args.port)
