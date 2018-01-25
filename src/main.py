@@ -38,7 +38,7 @@ if __name__ == '__main__':
         log_level = logging.INFO
     logging.basicConfig(filename='python-api.log',
                         filemode='a',
-                        format='%(asctime)s,%(msecs)-3d - %(name)-12s - %(levelname)-8s[] %(message)s',
+                        format='%(asctime)s,%(msecs)-3d - %(name)-12s - %(levelname)-8s => %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S',
                         level=log_level)
     logging.info("API Employee started")
