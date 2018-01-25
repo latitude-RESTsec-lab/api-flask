@@ -6,6 +6,7 @@ Created on Fri Jan 19 09:46:12 2018
 
 import collections
 import time, datetime
+import logging
 
 from db.connection import PostgresDbHelper
 
@@ -88,7 +89,7 @@ def create_employee(database_configuration, new_employee):
                                     new_employee['sexo'])
 
     if not conn.persist(parsed_sql):
-        print ("Database error!")
+        logging.error("Database error!")
         conn.close()
         return None
 

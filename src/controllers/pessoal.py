@@ -8,6 +8,7 @@ import json
 from flask import Blueprint, request
 from datetime import datetime
 import re
+import logging
 
 import db.db as db
 
@@ -84,7 +85,7 @@ def create_a_new_employee_api():
 
     # TODO test if the data is JSON
     new_employee_data = request.json
-    print ("post de servidor={}".format(new_employee_data))
+    logging.debug("Received data: {}".format(new_employee_data))
 
     data_validation = dict()
     # - required data
