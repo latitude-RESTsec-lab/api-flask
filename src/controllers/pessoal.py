@@ -106,7 +106,7 @@ def create_a_new_employee_api():
     # storing data in the database
     new_id = db.create_employee(database_config, new_employee_data)
     if new_id:
-        return "Created: {}".format(new_id), 201
+        return "Created: {}".format(new_id), 201, {'Location': '/api/servidor/{}'.format(new_id)}
     else:
         return "Internal server error", 500
 
