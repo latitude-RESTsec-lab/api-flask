@@ -12,7 +12,7 @@ import json
 
 import controllers.pessoal as con
 
-APP_LOG_FILENAME = 'python-api.log'
+APP_LOG_FILENAME = os.path.dirname(__file__) + "/" + 'python-api.log'
 
 app = Flask(__name__)
 app.register_blueprint(con.pessoal_controllers)
