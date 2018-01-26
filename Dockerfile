@@ -17,4 +17,4 @@ COPY . /app
 
 EXPOSE 8000
 ENTRYPOINT [ "python3" ]
-CMD [ "src/main.py" ]
+CMD [ "src/main.py -s DB_SERVER -d DB_NAME -u DB_USER -w DB_PASSWORD " ]
