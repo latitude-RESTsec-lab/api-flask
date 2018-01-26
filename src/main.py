@@ -39,15 +39,15 @@ if __name__ == '__main__':
                         help="Username to access the database", metavar="username")
     parser.add_argument("-w", "--password", 
                         help="User's password to acess the database", metavar="user_password")
-    parser.add_argument("-c", "--config_file", 
+    parser.add_argument("-c", "--config", 
                         help="Database config file path", metavar="config_file")
     parser.add_argument("--debug", action="store_true")
     parser.add_argument("-p", "--port", type=int, default=8000,
                         help="Port the program will try to use to serve de API", metavar="api_port")
     args = parser.parse_args()
 
-    if args.config_file:
-        args.servername, args.database, args.username, args.password = load_db_config(args.config_file)
+    if args.config:
+        args.servername, args.database, args.username, args.password = load_db_config(args.config)
     con.configure_params(args.servername, args.database, args.username, args.password)
 
     if args.debug:
