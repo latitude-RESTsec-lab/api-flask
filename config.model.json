@@ -1,0 +1,8 @@
+{
+  "Debug": "True",
+  "LogLocation": "./server.log",
+  "servername": "servername",
+  "database"  : "database",
+  "username"  : "username",
+  "password"  : "password"
+}
