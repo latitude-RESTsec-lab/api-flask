@@ -12,7 +12,7 @@ from db.connection import PostgresDbHelper
 
 SQL_STMT_ALL_EMPLOYEES = """
             select s.id_servidor, s.siape, s.id_pessoa, s.matricula_interna, 
-                   s.id_foto, s.nome_identificacao, 
+                   s.nome_identificacao, 
                    p.nome, p.data_nascimento, p.sexo
             from rh.servidor s
             inner join comum.pessoa p on (s.id_pessoa = p.id_pessoa) and (p.tipo = 'F')
@@ -20,9 +20,9 @@ SQL_STMT_ALL_EMPLOYEES = """
 SQL_STMT_ONE_EMPLOYEE = SQL_STMT_ALL_EMPLOYEES + "where s.siape = {}"
 SQL_STMT_NEW_EMPLOYEE = """
             INSERT INTO rh.servidor_tmp(
-                nome, nome_identificacao, siape, id_pessoa, matricula_interna, id_foto,
+                nome, nome_identificacao, siape, id_pessoa, matricula_interna, 
                 data_nascimento, sexo)
-			VALUES ('{}', '{}', {}, {}, {}, null, '{}', '{}');
+			VALUES ('{}', '{}', {}, {}, {}, '{}', '{}');
             """
 
 # get all employees from database, using the PostgresDbHelper object
