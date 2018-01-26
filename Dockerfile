@@ -6,8 +6,10 @@ WORKDIR /app
 
 RUN pip3 install --proxy='https://10.30.0.10:3128' --no-cache-dir -r requirements.txt
 
-COPY . /app
+ADD src /app
+
+COPY database.conf database.conf
 
 EXPOSE 8000
-ENTRYPOINT [ "python3" ]
-CMD [ "src/main.py --config databse.conf " ]
+
+ENTRYPOINT ["/bin/bash", "run.sh"]
