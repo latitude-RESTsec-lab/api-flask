@@ -12,6 +12,8 @@ import json
 
 import controllers.pessoal as con
 
+APP_LOG_FILENAME = 'python-api.log'
+
 app = Flask(__name__)
 app.register_blueprint(con.pessoal_controllers)
 
@@ -54,12 +56,14 @@ if __name__ == '__main__':
         log_level = logging.DEBUG
     else:
         log_level = logging.INFO
-    logging.basicConfig(filename='python-api.log',
+    logging.basicConfig(filename=APP_LOG_FILENAME,
                         filemode='a',
                         format='%(asctime)s,%(msecs)-3d - %(name)-12s - %(levelname)-8s => %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S',
                         level=log_level)
     logging.info("API Employee started")
+
+    print("API service is starting and will be avaialble at 'http://localhost:{}/. The application log is stored in the file '{}'.".format(args.port, APP_LOG_FILENAME))
 
     # starting the web server
     app.run(debug=args.debug, host='0.0.0.0', port=args.port)
