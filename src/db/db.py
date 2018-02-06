@@ -38,9 +38,9 @@ def get_all_employees(database_configuration):
         d['siape'] = row[1]
         d['id_pessoa'] = row[2]
         d['matricula_interna'] = row[3]
-        d['nome'] = row[6]
-        d['data_nascimento'] = row[7].__str__()
-        d['sexo'] = row[8]
+        d['nome'] = row[5]
+        d['data_nascimento'] = row[6].__str__()
+        d['sexo'] = row[7]
         objects_list.append(d)
 
     conn.close()
@@ -63,9 +63,9 @@ def get_employee_by_id(database_configuration, mat_servidor):
             employee_data['siape'] = row[1]
             employee_data['id_pessoa'] = row[2]
             employee_data['matricula_interna'] = row[3]
-            employee_data['nome'] = row[6]
-            employee_data['data_nascimento'] = row[7].__str__()
-            employee_data['sexo'] = row[8]
+            employee_data['nome'] = row[5]
+            employee_data['data_nascimento'] = row[6].__str__()
+            employee_data['sexo'] = row[7]
 
     conn.close()
     
