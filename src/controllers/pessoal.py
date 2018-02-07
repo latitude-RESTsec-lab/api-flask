@@ -192,7 +192,7 @@ def __data_size_validator(employee_data):
     result = []
     data_size = [('nome', 100), ('sexo', 1)]
     for x in data_size:
-        if len(employee_data[x[0]]) > x[1]:
+        if x[0] in employee_data and len(employee_data[x[0]]) > x[1]:
             result.append("Field '{}' is {} size long but it must be {}".format(x[0], len(employee_data[x[0]]), x[1]))
     return "; ".join(result)
 
