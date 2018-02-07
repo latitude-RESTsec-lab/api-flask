@@ -1,6 +1,10 @@
 {
   "Debug": "True",
   "LogLocation": "./server.log",
+  "HttpPort": 8000,
+  "HttpsPort": 443,
+  "TLSKeyLocation": "./devssl/key.pem",
+  "TLSCertLocation": "./devssl/cert.pem",
   "servername": "servername",
   "database"  : "database",
   "username"  : "username",

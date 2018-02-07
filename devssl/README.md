@@ -4,14 +4,8 @@
 
 Please visit https://github.com/openssl/openssl to get pkg and install.
 
-2. Generate RSA private key
+2. Generate RSA private key and the digital certificate
 
 ```sh
-$ openssl genrsa -out ./devssl/server.key 2048
-```
-
-3. Generate digital certificate
-
-```sh
-$ openssl req -new -x509 -key ./devssl/server.key -out ./devssl/server.pem -days 365
+$ openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
 ```

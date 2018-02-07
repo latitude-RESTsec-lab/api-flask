@@ -27,30 +27,35 @@ def load_db_config(config_file):
         # TODO raise exception
 
     configuration = json.load(open(filename))
-    return configuration['servername'], configuration['database'], configuration['username'], configuration['password']
+    #return configuration['servername'], configuration['database'], configuration['username'], configuration['password']
+    return configuration
 
 if __name__ == '__main__':
     # configuring the parameters parser and storing parameters in global vars
     parser = argparse.ArgumentParser(description='"API Servidor" to provide/handle employee\'s data.')
 
-    parser.add_argument("-s", "--servername", metavar='server_name', 
-                        help='Name of the database host server')
-    parser.add_argument("-d", "--database", 
-                        help="Name of the database", metavar="database_name")
-    parser.add_argument("-u", "--username", 
-                        help="Username to access the database", metavar="username")
-    parser.add_argument("-w", "--password", 
-                        help="User's password to acess the database", metavar="user_password")
+    #parser.add_argument("-s", "--servername", metavar='server_name', 
+    #                    help='Name of the database host server')
+    #parser.add_argument("-d", "--database", 
+    #                    help="Name of the database", metavar="database_name")
+    #parser.add_argument("-u", "--username", 
+    #                    help="Username to access the database", metavar="username")
+    #parser.add_argument("-w", "--password", 
+    #                    help="User's password to acess the database", metavar="user_password")
     parser.add_argument("-c", "--config", 
                         help="Database config file path", metavar="config_file")
     parser.add_argument("--debug", action="store_true")
-    parser.add_argument("-p", "--port", type=int, default=8000,
-                        help="Port the program will try to use to serve de API", metavar="api_port")
+    #parser.add_argument("-p", "--port", type=int, default=8000,
+    #                    help="Port the program will try to use to serve de API", metavar="api_port")
+    parser.add_argument("--no-ssl", action="store_true", 
+                        help='Start server without SSL')
     args = parser.parse_args()
 
+    server_config = {}
     if args.config:
-        args.servername, args.database, args.username, args.password = load_db_config(args.config)
-    con.configure_params(args.servername, args.database, args.username, args.password)
+        #args.servername, args.database, args.username, args.password = load_db_config(args.config)
+        server_config = load_db_config(args.config)
+    con.configure_params(server_config['servername'], server_config['database'], server_config['username'], server_config['password'])
 
     if args.debug:
         log_level = logging.DEBUG
@@ -63,7 +68,13 @@ if __name__ == '__main__':
                         level=log_level)
     logging.info("API Employee started")
 
-    print("API service is starting and will be avaialble at 'http://localhost:{}/. The application log is stored in the file '{}'.".format(args.port, APP_LOG_FILENAME))
+    if args.no_ssl:
+        server_port = server_config['HttpPort']
+        ssl_context = ()
+    else:
+        server_port = server_config['HttpsPort']
+        ssl_config = (server_config['TLSCertLocation'], server_config['TLSKeyLocation'])
+    print("API service is starting and will be avaialble at 'http://localhost:{}/.\nThe application log is stored in the file '{}'.".format(server_port, APP_LOG_FILENAME))
 
     # starting the web server
-    app.run(debug=args.debug, host='0.0.0.0', port=args.port)
+    app.run(debug=args.debug, host='0.0.0.0', port=server_port, ssl_context=ssl_config)

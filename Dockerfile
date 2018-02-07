@@ -8,6 +8,8 @@ RUN pip3 install --proxy='https://10.30.0.10:3128' --no-cache-dir -r requirement
 
 ADD src /app
 
+ADD ./devssl ./devssl
+
 COPY database.conf database.conf
 
 EXPOSE 8000
