@@ -58,11 +58,13 @@ if __name__ == '__main__':
 
     if args.no_ssl:
         server_port = server_config['HttpPort']
+        server_protocol = 'http'
         ssl_config = None
     else:
         server_port = server_config['HttpsPort']
+        server_protocol = 'https'
         ssl_config = (server_config['TLSCertLocation'], server_config['TLSKeyLocation'])
-    print("API service is starting and will be avaialble at 'http://localhost:{}/.\nThe application log is stored in the file '{}'.".format(server_port, APP_LOG_FILENAME))
+    print("API service is starting and will be avaialble at '{}://localhost:{}/.\nThe application log is stored in the file '{}'.".format(server_protocol, server_port, APP_LOG_FILENAME))
 
     # starting the web server
     app.run(debug=args.debug, host='0.0.0.0', port=server_port, ssl_context=ssl_config)
