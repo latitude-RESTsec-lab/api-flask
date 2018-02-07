@@ -99,3 +99,7 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# RSA private key and digital certificate
+*.key
+*.pem
