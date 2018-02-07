@@ -33,27 +33,15 @@ def load_db_config(config_file):
 if __name__ == '__main__':
     # configuring the parameters parser and storing parameters in global vars
     parser = argparse.ArgumentParser(description='"API Servidor" to provide/handle employee\'s data.')
-
-    #parser.add_argument("-s", "--servername", metavar='server_name', 
-    #                    help='Name of the database host server')
-    #parser.add_argument("-d", "--database", 
-    #                    help="Name of the database", metavar="database_name")
-    #parser.add_argument("-u", "--username", 
-    #                    help="Username to access the database", metavar="username")
-    #parser.add_argument("-w", "--password", 
-    #                    help="User's password to acess the database", metavar="user_password")
     parser.add_argument("-c", "--config", 
                         help="Database config file path", metavar="config_file")
     parser.add_argument("--debug", action="store_true")
-    #parser.add_argument("-p", "--port", type=int, default=8000,
-    #                    help="Port the program will try to use to serve de API", metavar="api_port")
     parser.add_argument("--no-ssl", action="store_true", 
                         help='Start server without SSL')
     args = parser.parse_args()
 
     server_config = {}
     if args.config:
-        #args.servername, args.database, args.username, args.password = load_db_config(args.config)
         server_config = load_db_config(args.config)
     con.configure_params(server_config['servername'], server_config['database'], server_config['username'], server_config['password'])
 
