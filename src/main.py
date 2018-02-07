@@ -17,7 +17,7 @@ APP_LOG_FILENAME = os.path.dirname(__file__) + "/" + 'python-api.log'
 app = Flask(__name__)
 app.register_blueprint(con.pessoal_controllers)
 
-def load_db_config(config_file):
+def load_configuration(config_file):
     filename = config_file
     if not os.path.dirname(os.path.dirname(config_file)):
         filename = os.path.dirname(__file__) + "/" + config_file
@@ -27,7 +27,6 @@ def load_db_config(config_file):
         # TODO raise exception
 
     configuration = json.load(open(filename))
-    #return configuration['servername'], configuration['database'], configuration['username'], configuration['password']
     return configuration
 
 if __name__ == '__main__':
@@ -42,7 +41,7 @@ if __name__ == '__main__':
 
     server_config = {}
     if args.config:
-        server_config = load_db_config(args.config)
+        server_config = load_configuration(args.config)
     con.configure_params(server_config['servername'], server_config['database'], server_config['username'], server_config['password'])
 
     if args.debug:
