@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
     if args.no_ssl:
         server_port = server_config['HttpPort']
-        ssl_context = ()
+        ssl_config = None
     else:
         server_port = server_config['HttpsPort']
         ssl_config = (server_config['TLSCertLocation'], server_config['TLSKeyLocation'])
