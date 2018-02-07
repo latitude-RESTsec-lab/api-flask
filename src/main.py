@@ -12,7 +12,6 @@ import json
 
 import controllers.pessoal as con
 
-APP_LOG_FILENAME = os.path.dirname(__file__) + "/" + 'python-api.log'
 
 app = Flask(__name__)
 app.register_blueprint(con.pessoal_controllers)
@@ -43,6 +42,8 @@ if __name__ == '__main__':
     if args.config:
         server_config = load_configuration(args.config)
     con.configure_params(server_config['servername'], server_config['database'], server_config['username'], server_config['password'])
+
+    APP_LOG_FILENAME = os.path.dirname(__file__) + "/" + server_config['LogLocation']
 
     if args.debug:
         log_level = logging.DEBUG
