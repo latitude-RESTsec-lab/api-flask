@@ -7,6 +7,7 @@ Created on Fri Jan 19 09:46:12 2018
 import collections
 import time, datetime
 import logging
+import hashlib
 
 from db.connection import PostgresDbHelper
 
@@ -75,16 +76,18 @@ def get_employee_by_id(database_configuration, mat_servidor):
 def create_employee(database_configuration, new_employee):
     conn = PostgresDbHelper(database_configuration)
 
-    date_now = datetime.datetime.now()
-    b = time.mktime(date_now.timetuple())
-    bid = b % 99999
+    date_now = "{:%Y-%m-%dT%H:%M:%S-%z}".format(datetime.datetime.now())
+    base_key = new_employee['nome'] + date_now
+    b = hashlib.md5(base_key.encode('utf-8')).hexdigest()
+    bid = int(b, 16)
+    new_key = bid % 99999
 
     parsed_sql = SQL_STMT_NEW_EMPLOYEE.format(
                                     new_employee['nome'],
                                     new_employee['nome_identificacao'],
                                     new_employee['siape'],
                                     new_employee['id_pessoa'],
-                                    bid,
+                                    new_key,
                                     new_employee['data_nascimento'],
                                     new_employee['sexo'])
 
@@ -94,4 +97,4 @@ def create_employee(database_configuration, new_employee):
         return None
 
     conn.close()
-    return bid
+    return new_key
