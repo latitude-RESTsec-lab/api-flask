@@ -1,4 +1,11 @@
-FROM python:3
+FROM python:3-alpine3.6
+
+ENV http_proxy 'http://10.30.0.10:3128'
+ENV https_proxy 'https://10.30.0.10:3128'
+
+RUN apk update && \
+    apk add --virtual build-deps gcc python-dev musl-dev && \
+    apk add postgresql-dev
 
 COPY requirements.txt /app/requirements.txt
 
@@ -14,4 +21,4 @@ COPY database.conf database.conf
 
 EXPOSE 8000
 
-ENTRYPOINT ["/bin/bash", "run.sh"]
+ENTRYPOINT ["/bin/ash", "run.sh"]
