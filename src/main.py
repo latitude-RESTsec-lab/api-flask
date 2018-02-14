@@ -67,4 +67,4 @@ if __name__ == '__main__':
     print("API service is starting and will be avaialble at '{}://localhost:{}/.\nThe application log is stored in the file '{}'.".format(server_protocol, server_port, APP_LOG_FILENAME))
 
     # starting the web server
-    app.run(debug=args.debug, host='0.0.0.0', port=server_port, ssl_context=ssl_config)
+    app.run(debug=args.debug, host='0.0.0.0', port=server_port, threaded=True, ssl_context=ssl_config)
