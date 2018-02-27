@@ -26,15 +26,14 @@ curl http://localhost:8000/api/servidores
 
 ## Program configuration
 
-Some program configurations must be set up in the program startup. So, the initialization command should be like this:
+Some program configurations must be set up in the configuration file (see an sample [config.model.json](config.model.json)) and used as input to the program startup. So, the initialization command should be like this:
 
 ```shell
-program-name -s SERVER_NAME -d DB_NAME -u USER_NAME -w USER_PASSWORD --debug -p PORT_NUMBER
+python3 main.py --config CONFIG_FILE_NAME
 ```
 
 Notes:
-- the parameters `debug` and `port` are optionals;
-- all capital words must be replaced by the correct value.
+in the configuration file, we need to set database connection and web server parameters.
 
 ## Some useful links
 
