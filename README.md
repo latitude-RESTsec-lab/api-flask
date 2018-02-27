@@ -1,4 +1,4 @@
-# Python3 + Flask API 
+# Python3 + Flask
 
 # 
 Simple syntax, 
