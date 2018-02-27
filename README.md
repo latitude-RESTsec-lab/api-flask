@@ -1,8 +1,7 @@
 # Python3 + Flask
 
-# 
-Simple syntax, 
-flexible use of databases with native SQL queries.
+Experimental API to handle SIGRH data using the Python Flask framework.
+
 
 ## Dev environment setup
 
