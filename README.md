@@ -10,7 +10,7 @@ The developer workstation must have:
 * Python 3 (<https://www.python.org/>)
 * PyPI (<https://pypi.python.org/pypi>)
 * Python libraries described in the file [requirements.txt](requirements.txt)
-* Connectivity with a intance of SIGRH database
+* Connectivity with an intance of SIGRH database
 * Docker CE (optional: it is required only to run the app in a Docker container)
 
 ## Running with Docker
