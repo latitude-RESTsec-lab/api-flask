@@ -36,6 +36,10 @@ Notes:
 - the parameters `debug` and `port` are optionals;
 - all capital words must be replaced by the correct value.
 
-## Other issues
+## Some useful links
 
-https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept
+* [Twisted overview @ stackoverflow](https://stackoverflow.com/questions/5458631/whats-so-cool-about-twisted)
+* [HTTP header 'accept' documentation @ Mozilla](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept)
+
+
+
