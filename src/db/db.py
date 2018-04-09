@@ -18,7 +18,7 @@ SQL_STMT_ALL_EMPLOYEES = """
             from rh.servidor s
             inner join comum.pessoa p on (s.id_pessoa = p.id_pessoa) and (p.tipo = 'F')
             """
-SQL_STMT_ONE_EMPLOYEE = SQL_STMT_ALL_EMPLOYEES + "where s.matricula_interna = {}"
+SQL_STMT_ONE_EMPLOYEE = SQL_STMT_ALL_EMPLOYEES + "where s.siape = {}"
 SQL_STMT_NEW_EMPLOYEE = """
             INSERT INTO rh.servidor_tmp(
                 nome, nome_identificacao, siape, id_pessoa, matricula_interna, 
