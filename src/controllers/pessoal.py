@@ -28,11 +28,12 @@ database_config = {}
 pessoal_controllers = Blueprint('pessoal_controllers', __name__)
 
 
-def configure_params(p_servername, p_database, p_username, p_password):
+def configure_params(p_servername, p_database, p_username, p_password, p_port):
     database_config['db_servername'] = p_servername
     database_config['db_database'] = p_database
     database_config['db_username'] = p_username
     database_config['db_password'] = p_password
+    database_config['db_port'] = p_port
 
 # web service API servidores
 @pessoal_controllers.route('/api/servidores', methods=['GET'])

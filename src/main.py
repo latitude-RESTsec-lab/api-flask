@@ -48,7 +48,9 @@ if __name__ == '__main__':
     if args.config:
         server_config = load_configuration(args.config)
     # TODO DatabasePort
-    con.configure_params(server_config['DatabaseHost'], server_config['DatabaseName'], server_config['DatabaseUser'], server_config['DatabasePassword'])
+    con.configure_params(server_config['DatabaseHost'], server_config['DatabaseName'], 
+                         server_config['DatabaseUser'], server_config['DatabasePassword'], 
+                         server_config['DatabasePort'])
 
     APP_LOG_FILENAME = os.path.dirname(__file__) + "/" + server_config['LogLocation']
 

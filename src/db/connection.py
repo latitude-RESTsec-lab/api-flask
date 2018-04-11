@@ -14,11 +14,12 @@ class PostgresDbHelper(object):
             raise Exception("There is no database configuration.")
         elif not set(('db_servername', 'db_database', 'db_username', 'db_password')).issubset(db_config):
             raise Exception("Some database configuration is missing.")
-
+        
         self._db = psycopg2.connect(host=db_config['db_servername'], 
                                     database=db_config['db_database'], 
                                     user=db_config['db_username'], 
-                                    password=db_config['db_password'])
+                                    password=db_config['db_password'],
+                                    port=db_config['db_port'])
 
     def persist(self, sql):
         try:
