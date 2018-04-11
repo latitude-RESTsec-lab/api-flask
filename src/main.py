@@ -40,7 +40,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='"API Servidor" to provide/handle employee\'s data.')
     parser.add_argument("-c", "--config", 
                         help="Database config file path", metavar="config_file")
-    parser.add_argument("--debug", action="store_true")
     parser.add_argument("--no-ssl", action="store_true", 
                         help='Start server without SSL')
     args = parser.parse_args()
@@ -53,7 +52,7 @@ if __name__ == '__main__':
 
     APP_LOG_FILENAME = os.path.dirname(__file__) + "/" + server_config['LogLocation']
 
-    if args.debug:
+    if server_config['Debug']:
         log_level = logging.DEBUG
     else:
         log_level = logging.INFO
@@ -75,4 +74,4 @@ if __name__ == '__main__':
     print("API service is starting and will be avaialble at '{}://localhost:{}/.\nThe application log is stored in the file '{}'.".format(server_protocol, server_port, APP_LOG_FILENAME))
 
     # starting the web server
-    app.run(debug=args.debug, host='0.0.0.0', port=server_port, threaded=True, ssl_context=ssl_config)
+    app.run(debug=server_config['Debug'], host='0.0.0.0', port=server_port, threaded=True, ssl_context=ssl_config)
