@@ -26,6 +26,13 @@ def load_configuration(config_file):
         # TODO raise exception
 
     configuration = json.load(open(filename))
+    # verify if the configuration file provided all required data
+    required_configuration = ['DatabaseHost', 'DatabaseName', 'DatabaseUser', 
+                              'DatabasePassword', 'DatabasePort', 'LogLocation', 
+                              'HttpPort', 'HttpsPort', 'TLSCertLocation', 'TLSKeyLocation']
+    diff = (set(required_configuration) - set(configuration.keys()) )
+    if len(diff) > 0:
+        print("The provided configuration file doesn't have all the required configuration.\nThe following parameter(es) is missing: {}".format(diff))
     return configuration
 
 if __name__ == '__main__':
@@ -41,7 +48,8 @@ if __name__ == '__main__':
     server_config = {}
     if args.config:
         server_config = load_configuration(args.config)
-    con.configure_params(server_config['servername'], server_config['database'], server_config['username'], server_config['password'])
+    # TODO DatabasePort
+    con.configure_params(server_config['DatabaseHost'], server_config['DatabaseName'], server_config['DatabaseUser'], server_config['DatabasePassword'])
 
     APP_LOG_FILENAME = os.path.dirname(__file__) + "/" + server_config['LogLocation']
 

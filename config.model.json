@@ -5,8 +5,9 @@
   "HttpsPort": 443,
   "TLSKeyLocation": "./devssl/key.pem",
   "TLSCertLocation": "./devssl/cert.pem",
-  "servername": "servername",
-  "database"  : "database",
-  "username"  : "username",
-  "password"  : "password"
+  "DatabaseHost": "servername",
+  "DatabaseName"  : "database",
+  "DatabaseUser"  : "username",
+  "DatabasePassword"  : "password",
+  "DatabasePort": "5432"
 }
