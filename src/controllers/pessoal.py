@@ -5,6 +5,7 @@ Created on Fri Jan 19 09:46:12 2018
 """
 
 import json
+import math
 from flask import Blueprint, request
 from datetime import datetime
 import re
@@ -109,6 +110,43 @@ def create_a_new_employee_api():
         return "", 201, {'Location': '/api/servidor/{}'.format(new_id), 'Content-Type': 'text/plain; charset=utf-8'}
     else:
         return "Internal server error", 500
+
+@pessoal_controllers.route('/api/calculo', methods=['POST'])
+def calculate():
+    '''	
+    Example: 
+	curl -H "Content-Type: application/json" -X POST -d '{"id_servidor": 4321, "siape": 123456, "id_pessoa": 1234, "matricula_interna": 54321, "nome": "João da Silva", "nome_identificacao": "João Ident", "data_nascimento": "1970-01-31", "sexo": "M"}' http://localhost:8000/api/servidor/
+    
+}
+	'''
+    if not validate_suported_mime_type():
+        return "Unsupported Media Type", 415
+
+    # TODO test if the data is JSON
+    matrix = request.json
+    matrix = _calc(matrix)
+    if True:
+        return '{ "Result" : '+ str(sum(matrix))+'}', 200, {'Content-Type': 'text/json; charset=utf-8'}
+    else:
+        return "Internal server error", 500
+
+
+def _calc(matrix):
+	for rowIndex, row in range(matrix):
+		relSum = 0.0
+		for  index, element in range(row):
+			relSum += element**2
+		relSum = relSum / float(len(row))
+		for index, element in range(row) :
+			matrix[rowIndex][index] = math.sqrt(element * relSum)
+	return matrix
+
+def _sum(matrix ):
+	relSum = 0.0
+	for row in range(matrix):
+		for element in range(row):
+			relSum += element
+	return relSum
 
 def __regex_validator(employee_data):
     '''Function to validate if a subset of fields has accepted pattern.

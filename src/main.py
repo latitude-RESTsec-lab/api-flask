@@ -41,7 +41,7 @@ if __name__ == '__main__':
     server_config = {}
     if args.config:
         server_config = load_configuration(args.config)
-    con.configure_params(server_config['servername'], server_config['database'], server_config['username'], server_config['password'])
+    con.configure_params(server_config['DatabaseHost'], server_config['DatabaseName'], server_config['DatabaseUser'], server_config['DatabasePassword'])
 
     APP_LOG_FILENAME = os.path.dirname(__file__) + "/" + server_config['LogLocation']
 
@@ -57,11 +57,11 @@ if __name__ == '__main__':
     logging.info("API Employee started")
 
     if args.no_ssl:
-        server_port = server_config['HttpPort']
+        server_port = int(server_config['HttpPort'])
         server_protocol = 'http'
         ssl_config = None
     else:
-        server_port = server_config['HttpsPort']
+        server_port = int(server_config['HttpsPort'])
         server_protocol = 'https'
         ssl_config = (server_config['TLSCertLocation'], server_config['TLSKeyLocation'])
     print("API service is starting and will be avaialble at '{}://localhost:{}/.\nThe application log is stored in the file '{}'.".format(server_protocol, server_port, APP_LOG_FILENAME))

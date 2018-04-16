@@ -10,7 +10,7 @@ ADD src /app
 
 ADD ./devssl ./devssl
 
-COPY database.conf database.conf
+COPY conf.json conf.json
 
 EXPOSE 8000
 
